@@ -1,10 +1,15 @@
 # server.py
 from flask import Flask, request, jsonify
 import multiprocessing
-import sys
 import io
+import os
 import contextlib
 import traceback
+import dotenv
+dotenv.load_dotenv()
+
+# Load PORT env from .env
+PORT = os.getenv("PORT")
 
 app = Flask(__name__)
 
@@ -81,4 +86,4 @@ def invoke():
 if __name__ == '__main__':
     # Threaded=True allows handling multiple requests, 
     # though the heavy lifting is done by multiprocessing
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=PORT)
