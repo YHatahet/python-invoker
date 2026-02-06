@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  lambda-emulator:
+    build: .
+    ports:
+      - "5000:5000"
+    
+    # SECURITY: Make the filesystem Read-Only.
+    # The python code cannot save files or malware to the container.
+    read_only: true
+    
+    # We must mount a tmp volume because Python needs to write 
+    # temporary files during execution/compilation.
+    tmpfs:
+      - /tmp
+      
+    # RESOURCE LIMITS: Mimic AWS Lambda limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'    # Limit to 50% of one CPU core
+          memory: 128M   # Limit RAM to 128MB
